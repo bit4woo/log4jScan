@@ -25,7 +25,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IExtensionSta
 		return helpers;
 	}
 
-	public static String ExtensionName = "J2EEScan++";
+	public static String ExtensionName = "log4jScan";
 	public static String Version = bsh.This.class.getPackage().getImplementationVersion();
 	public static String Author = "by bit4woo";	
 	public static String github = "https://github.com/bit4woo/log4jScan";
