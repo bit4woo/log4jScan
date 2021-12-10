@@ -143,7 +143,7 @@ public class CollaboratorThread extends Thread {
 			}
 		}
 
-		while(collaIssues.size()>=300) {
+		while(collaIssues.size()>=3000) {
 			collaIssues.remove(0);
 		}
 	}
